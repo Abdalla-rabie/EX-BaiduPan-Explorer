@@ -346,7 +346,6 @@
         Promise.all([dmPromise, gjcPromise, ddsPromise]).then(function() {
             try {
                 require('ex-yunpan:downloadBtnInit');
-                ctx.ui.tip({ mode: 'success', msg: 'BaiduPan Explorer: 插件加载成功' });
             } catch (e) {
                 ctx.ui.tip({ mode: 'caution', msg: 'BaiduPan Explorer: 插件加载成功，按钮初始化失败', autoClose: false, hasClose: true });
             }
