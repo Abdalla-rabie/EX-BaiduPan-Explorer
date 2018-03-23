@@ -1,9 +1,12 @@
-# Tampermonkey 油猴脚本 BaiduPan Explorer 百度网盘高速链接提取
+# Tampermonkey BaiduPan Explorer 
+**百度网盘高速链接提取**
 
 Tampermonkey 主页：https://tampermonkey.net
+
 BaiduPan Explorer 油猴脚本地址：https://greasyfork.org/zh-CN/scripts/39844
 
 Github地址：https://github.com/luochenzhimu/EX-BaiduPan-Explorer
+
 Forked from https://github.com/gxvv/ex-baiduyunpan
 
 ## 功能
