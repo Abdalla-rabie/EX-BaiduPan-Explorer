@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BaiduPan Explorer
 // @namespace    https://github.com/luochenzhimu/EX-BaiduPan-Explorer
-// @version      1.0.0
+// @version      1.0.1
 // @description  [下载大文件] [批量下载] [文件夹下载] [百度网盘] [百度云盘] [百度云] [baidu] [baiduyun] [yunpan] [baiduyunpan] [BaiduNetdisk]
 // @author       luochenzhimu
 // @license      MIT
