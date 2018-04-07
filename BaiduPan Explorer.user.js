@@ -1,19 +1,21 @@
 // ==UserScript==
 // @name         BaiduPan Explorer
 // @namespace    https://github.com/luochenzhimu/EX-BaiduPan-Explorer
-// @version      1.0.1
-// @description  [下载大文件] [批量下载] [文件夹下载] [百度网盘] [百度云盘] [百度云] [baidu] [baiduyun] [yunpan] [baiduyunpan] [BaiduNetdisk]
-// @author       luochenzhimu
+// @version      1.0.2
+// @description  [下载大文件] [批量下载] [文件夹下载] [百度网盘] [百度云盘] [百度云盘企业版] [企业版] [baidu] [baiduyun] [yunpan] [baiduyunpan] [eyun]
+// @author       gxvv luochenzhimu
 // @license      MIT
 // @supportURL   https://www.luochenzhimu.com
 // @date         22/03/2018
-// @modified     22/03/2018
+// @modified     07/04/2018
 // @match        *://pan.baidu.com/disk/home*
 // @match        *://yun.baidu.com/disk/home*
 // @match        *://pan.baidu.com/s/*
 // @match        *://yun.baidu.com/s/*
 // @match        *://pan.baidu.com/share/link?*
 // @match        *://yun.baidu.com/share/link?*
+// @match        *://eyun.baidu.com/s/*
+// @match        *://eyun.baidu.com/enterprise/*
 // @run-at       document-end
 // @grant        unsafeWindow
 // @grant        GM_addStyle
@@ -42,7 +44,7 @@
         }
         var $dialog = $('<div id="errorDialog">' +
                         '<h3>EX-baiduyunpan:程序异常</h3>' +
-                        '<div class="dialog-body"><p>请尝试更新脚本或复制以下信息<a href="https://github.com/luochenzhimu/EX-BaiduPan-Explorer/issues" target="_blank">提交issue</a></p>' +
+                        '<div class="dialog-body"><p>请尝试更新脚本或复制以下信息<a href="https://github.com/gxvv/ex-baiduyunpan/issues" target="_blank">提交issue</a></p>' +
                         '<p>Exception: ' + msg + '</p>' +
                         '<p>Script Ver: ' + GM_info.script.version + '</p>' +
                         '<p>TemperMonkey Ver: ' + GM_info.version + '</p>' +
@@ -131,6 +133,13 @@
             'click': function() {
                 var fetchDownLinks = require('ex-yunpan:fetchDownLinks.js');
                 fetchDownLinks.start(ctx, dServ);
+            },
+            availableProduct: ['pan', 'share', 'enterprise']
+        }, {
+            title: '复制压缩链接',
+            'click': function() {
+                var fetchDownLinks = require('ex-yunpan:fetchDownLinks.js');
+                fetchDownLinks.start(ctx, dServ, true);
             },
             availableProduct: ['pan', 'share', 'enterprise']
         }];
@@ -261,9 +270,6 @@
                     ctx.ui.tip({ mode: 'caution', msg: '复制失败' });
                 });
                 dlinks = dlinks.map( function(link){
-                    return link.replace('https://d.pcs.baidu.com','https://bjbgp01.baidupcs.com');
-                });
-                dlinks = dlinks.map( function(link){
                     return link.replace('https://www.baidupcs.com','https://bjbgp01.baidupcs.com');
                 });
                 var text = '<textarea id="bar" rows="' + ((dlinks.length > 20 ? 20 : dlinks.length) + 1) + '" style="width: 100%;white-space: nowrap;">' + dlinks.join('\n') + '</textarea>';
@@ -347,7 +353,7 @@
             try {
                 require('ex-yunpan:downloadBtnInit');
             } catch (e) {
-                ctx.ui.tip({ mode: 'caution', msg: 'BaiduPan Explorer: 插件加载成功，按钮初始化失败', autoClose: false, hasClose: true });
+                ctx.ui.tip({ mode: 'caution', msg: 'EX-baiduyunpan: 插件加载成功，按钮初始化失败', autoClose: false, hasClose: true });
             }
         }).catch(function(msg) {
             if(document.querySelector('#share_nofound_des') !== null) return;
