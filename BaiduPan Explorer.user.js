@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         BaiduPan Explorer
 // @namespace    https://github.com/luochenzhimu/EX-BaiduPan-Explorer
-// @version      1.0.2
+// @version      1.0.3
 // @description  [下载大文件] [批量下载] [文件夹下载] [百度网盘] [百度云盘] [百度云盘企业版] [企业版] [baidu] [baiduyun] [yunpan] [baiduyunpan] [eyun]
 // @author       gxvv luochenzhimu
 // @license      MIT
 // @supportURL   https://www.luochenzhimu.com
 // @date         22/03/2018
-// @modified     07/04/2018
+// @modified     06/06/2018
 // @match        *://pan.baidu.com/disk/home*
 // @match        *://yun.baidu.com/disk/home*
 // @match        *://pan.baidu.com/s/*
@@ -44,7 +44,7 @@
         }
         var $dialog = $('<div id="errorDialog">' +
                         '<h3>EX-baiduyunpan:程序异常</h3>' +
-                        '<div class="dialog-body"><p>请尝试更新脚本或复制以下信息<a href="https://github.com/gxvv/ex-baiduyunpan/issues" target="_blank">提交issue</a></p>' +
+                        '<div class="dialog-body"><p>请尝试<a href="https://gxvv.github.io/ex-baiduyunpan/EX-baiduyunpan.user.js" target="_blank">更新脚本</a>或复制以下信息<a href="https://github.com/gxvv/ex-baiduyunpan/issues" target="_blank">提交issue</a>(请不要提交重复的issue)</p>' +
                         '<p>Exception: ' + msg + '</p>' +
                         '<p>Script Ver: ' + GM_info.script.version + '</p>' +
                         '<p>TemperMonkey Ver: ' + GM_info.version + '</p>' +
@@ -121,14 +121,8 @@
             dServ = dlinkService;
         });
 
-        var menu = [{
-            title: '普通下载',
-            'click': function() {
-                var start = require(prefix + 'download/start.js');
-                start.start(ctx);
-            },
-            availableProduct: ['pan', 'share', 'enterprise']
-        }, {
+        var menu = [
+		{
             title: '复制链接',
             'click': function() {
                 var fetchDownLinks = require('ex-yunpan:fetchDownLinks.js');
@@ -308,10 +302,7 @@
             $(unsafeWindow).on('load', function() {
                 reject('downloadManager.js');
             });
-            require.async(prefix + 'download/service/downloadManager.js', function(dm) {
-                dm.MODE_PRE_INSTALL = dm.MODE_PRE_DOWNLOAD;
-                resolve();
-            });
+            resolve();
         });
         var gjcPromise = new Promise(function(resolve, reject) {
             $(unsafeWindow).on('load', function() {
@@ -330,24 +321,7 @@
             $(unsafeWindow).on('load', function() {
                 reject('downloadDirectService.js');
             });
-            require.async(prefix + 'download/service/downloadDirectService.js', function(dDS) {
-                var $preDlFrame = null;
-                var _ = dDS.straightforwardDownload;
-                if (typeof _ !== 'function') return;
-                dDS.straightforwardDownload = function() {
-                    ctx.ui.tip({ mode: 'loading', msg: '正在开始下载...' });
-                    if ($preDlFrame === null) {
-                        setTimeout(function() {
-                            var $frame = $('#pcsdownloadiframe');
-                            if ($frame.length === 0) return;
-                            $frame.ready(function(event) { ctx.ui.hideTip(); });
-                            $preDlFrame = $frame;
-                        }, 1e3);
-                    }
-                    _.apply(dDS, arguments);
-                };
-                resolve();
-            });
+            resolve();
         });
         Promise.all([dmPromise, gjcPromise, ddsPromise]).then(function() {
             try {
